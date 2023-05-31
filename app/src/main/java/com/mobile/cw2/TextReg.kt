@@ -15,6 +15,7 @@ import android.view.Menu
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ListView
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -35,7 +36,7 @@ class TextReg: AppCompatActivity() {
     private lateinit var voiceBtn: MaterialButton
     private lateinit var imageIv: ImageView
     private lateinit var recognizedTextEt: EditText
-
+    private lateinit var listView: ListView
     private companion object{
         private const val CAMERA_REQUEST_CODE = 100
         private const val STORAGE_REQUEST_CODE = 101
@@ -60,7 +61,8 @@ class TextReg: AppCompatActivity() {
         voiceBtn = findViewById(R.id.voiceBtn)
 
         imageIv = findViewById(R.id.imageIv)
-        recognizedTextEt = findViewById(R.id.recognizedTextEt)
+       // recognizedTextEt = findViewById(R.id.recognizedTextEt)
+        listView = findViewById(R.id.listView)
 
         cameraPermissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         storageaPermissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -82,9 +84,6 @@ class TextReg: AppCompatActivity() {
                 recognizeTextFromImage()
             }
         }
-
-
-
     }
 
     fun speak(view: View){
@@ -96,10 +95,9 @@ class TextReg: AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        recognizedTextEt.setText(
-            data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.get(0).toString())
+//        recognizedTextEt.setText(
+//            data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.get(0).toString())
     }
-
 
 
     private fun recognizeTextFromImage() {
@@ -115,7 +113,16 @@ class TextReg: AppCompatActivity() {
                     progressDialog.dismiss()
                     val recognizedText = text.text
 
-                    recognizedTextEt.setText(recognizedText)
+//                    recognizedTextEt.setText(recognizedText)
+
+                    val myListAdapter = MyListAdapter(this,recognizedText.split("\n").toTypedArray(),)
+                    listView.adapter = myListAdapter
+
+                    listView.setOnItemClickListener(){adapterView, view, position, id ->
+                        val itemAtPos = adapterView.getItemAtPosition(position)
+                        val itemIdAtPos = adapterView.getItemIdAtPosition(position)
+                        Toast.makeText(this, "Click on item at $itemAtPos its item id $itemIdAtPos", Toast.LENGTH_LONG).show()
+                    }
                 }
                 .addOnFailureListener{e->
                     progressDialog.dismiss()
