@@ -18,22 +18,18 @@ class SplashActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        proceedToHomeScreen()
     }
 
-    fun checkDeviceHasBiometric(){
-        val biometricManager = BiometricManager.from(this)
+    private fun proceedToHomeScreen() {
+        Log.d("123","asd")
+        // Delay the transition to simulate a splash screen
+        Handler().postDelayed({
+            val intent = Intent(this, TextReg::class.java)
+            startActivity(intent)
+            finish()
+        }, 1000)
     }
-//    private fun proceedToHomeScreen() {
-//        Log.d("123","asd")
-//        // Delay the transition to simulate a splash screen
-//        Handler().postDelayed({
-//            val intent = Intent(this, MainActivity::class.java)
-//            startActivity(intent)
-//            finish()
-//        }, SPLASH_DELAY.toLong())
-//    }
 
 
 

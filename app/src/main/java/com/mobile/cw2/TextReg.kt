@@ -9,7 +9,10 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.speech.RecognizerIntent
+import android.util.Log
 import android.view.Menu
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.PopupMenu
@@ -22,12 +25,14 @@ import com.google.android.material.button.MaterialButton
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.TextRecognizer
+import com.google.mlkit.vision.text.chinese.ChineseTextRecognizerOptions
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import java.lang.Exception
 
 class TextReg: AppCompatActivity() {
     private lateinit var inputImageBtn: MaterialButton
     private lateinit var recognitionBtn: MaterialButton
+    private lateinit var voiceBtn: MaterialButton
     private lateinit var imageIv: ImageView
     private lateinit var recognizedTextEt: EditText
 
@@ -52,6 +57,8 @@ class TextReg: AppCompatActivity() {
 
         inputImageBtn = findViewById(R.id.inputImageBtn)
         recognitionBtn = findViewById(R.id.recognizeTextBtn)
+        voiceBtn = findViewById(R.id.voiceBtn)
+
         imageIv = findViewById(R.id.imageIv)
         recognizedTextEt = findViewById(R.id.recognizedTextEt)
 
@@ -62,8 +69,8 @@ class TextReg: AppCompatActivity() {
         progressDialog.setTitle("Please wait")
         progressDialog.setCanceledOnTouchOutside(false)
 
-        textRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-
+        //textRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+        textRecognizer = TextRecognition.getClient(ChineseTextRecognizerOptions.Builder().build())
         inputImageBtn.setOnClickListener{
             showInputImageDialog()
         }
@@ -75,7 +82,24 @@ class TextReg: AppCompatActivity() {
                 recognizeTextFromImage()
             }
         }
+
+
+
     }
+
+    fun speak(view: View){
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Start Speaking")
+        startActivityForResult(intent,100)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        recognizedTextEt.setText(
+            data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.get(0).toString())
+    }
+
 
 
     private fun recognizeTextFromImage() {
@@ -118,8 +142,8 @@ class TextReg: AppCompatActivity() {
                 if(checkCameraPermission()){
                     pickImageCamera()
                 }else{
-                    pickImageGallery()
-//                    requestCameraPermission()
+//                    pickImageGallery()
+                   requestCameraPermission()
                 }
             }else if(id == 2){
                 if(checkStoragePermission()){
@@ -159,6 +183,8 @@ class TextReg: AppCompatActivity() {
         values.put(MediaStore.Images.Media.TITLE, "Sample  Title");
         values.put(MediaStore.Images.Media.DESCRIPTION,"Sample Title");
 
+        imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values)
+
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
         cameraActivityResultLauncher.launch(intent)
@@ -182,7 +208,6 @@ class TextReg: AppCompatActivity() {
     private fun checkCameraPermission(): Boolean{
         val cameraResult = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
         val storageResult = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-
         return cameraResult && storageResult
     }
 
@@ -193,7 +218,7 @@ class TextReg: AppCompatActivity() {
     }
 
     private fun requestCameraPermission(){
-        ActivityCompat.requestPermissions(this,storageaPermissions,
+        ActivityCompat.requestPermissions(this,cameraPermissions,
             CAMERA_REQUEST_CODE
         )
     }
