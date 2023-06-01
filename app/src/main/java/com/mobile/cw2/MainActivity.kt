@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.provider.MediaStore.Audio.Media
 import android.util.Log
@@ -15,6 +16,7 @@ import android.util.SparseArray
 import android.view.Menu
 import android.view.MenuItem
 import android.view.SurfaceHolder
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.PopupMenu
@@ -48,6 +50,13 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun addQuestion(view: View){
+        Handler().postDelayed({
+            val intent = Intent(this, TextReg::class.java)
+            startActivity(intent)
+            finish()
+        }, 1000)
+    }
 
 
 }

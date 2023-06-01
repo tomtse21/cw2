@@ -71,18 +71,36 @@
 <!--            <TextView android:layout_height="match_parent" android:layout_width="wrap_content"-->
 <!--                android:text="reg text:"/>-->
 
-<!--            <EditText-->
-<!--                android:id="@+id/recognizedTextEt"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:textSize="12dp">-->
 
-<!--            </EditText>-->
 
-            <ListView
-                android:id="@+id/listView"
+            <EditText
+                android:id="@+id/question"
                 android:layout_width="match_parent"
-                android:layout_height="334dp" />
+                android:layout_height="match_parent"
+                android:textSize="12dp">
+
+            </EditText>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/swipeText"
+                android.adjustViewBounds="true"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:src="@drawable/baseline_cached_24"
+                app:strokeWidth="2dp" />
+
+            <EditText
+                android:id="@+id/answer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="12dp">
+
+            </EditText>
+
+<!--            <ListView-->
+<!--                android:id="@+id/listView"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="334dp" />-->
 
         </LinearLayout>
 

@@ -25,7 +25,7 @@ class SplashActivity: AppCompatActivity() {
         Log.d("123","asd")
         // Delay the transition to simulate a splash screen
         Handler().postDelayed({
-            val intent = Intent(this, TextReg::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         }, 1000)

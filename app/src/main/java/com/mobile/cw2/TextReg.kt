@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -20,6 +21,11 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
@@ -28,8 +34,11 @@ import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.TextRecognizer
 import com.google.mlkit.vision.text.chinese.ChineseTextRecognizerOptions
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import java.io.File
 import java.lang.Exception
+import java.util.concurrent.ExecutorService
 
+typealias LumaListener = (luma: Double) -> Unit
 class TextReg: AppCompatActivity() {
     private lateinit var inputImageBtn: MaterialButton
     private lateinit var recognitionBtn: MaterialButton
@@ -37,6 +46,8 @@ class TextReg: AppCompatActivity() {
     private lateinit var imageIv: ImageView
     private lateinit var recognizedTextEt: EditText
     private lateinit var listView: ListView
+    private lateinit var questionEt : EditText
+    private lateinit var answerEt : EditText
     private companion object{
         private const val CAMERA_REQUEST_CODE = 100
         private const val STORAGE_REQUEST_CODE = 101
@@ -51,6 +62,11 @@ class TextReg: AppCompatActivity() {
     private lateinit var textRecognizer: TextRecognizer
 
 
+    private var imageCapture: ImageCapture? = null
+
+    private lateinit var outputDirectory: File
+    private lateinit var cameraExecutor: ExecutorService
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.text_reg)
@@ -61,8 +77,11 @@ class TextReg: AppCompatActivity() {
         voiceBtn = findViewById(R.id.voiceBtn)
 
         imageIv = findViewById(R.id.imageIv)
+        questionEt = findViewById(R.id.question)
+        answerEt = findViewById(R.id.answer)
+
        // recognizedTextEt = findViewById(R.id.recognizedTextEt)
-        listView = findViewById(R.id.listView)
+//        listView = findViewById(R.id.listView)
 
         cameraPermissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         storageaPermissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -114,15 +133,19 @@ class TextReg: AppCompatActivity() {
                     val recognizedText = text.text
 
 //                    recognizedTextEt.setText(recognizedText)
+                    val recognizedTextAry = recognizedText.split("\n").toTypedArray();
+//
 
-                    val myListAdapter = MyListAdapter(this,recognizedText.split("\n").toTypedArray(),)
-                    listView.adapter = myListAdapter
-
-                    listView.setOnItemClickListener(){adapterView, view, position, id ->
-                        val itemAtPos = adapterView.getItemAtPosition(position)
-                        val itemIdAtPos = adapterView.getItemIdAtPosition(position)
-                        Toast.makeText(this, "Click on item at $itemAtPos its item id $itemIdAtPos", Toast.LENGTH_LONG).show()
-                    }
+                    questionEt.setText(recognizedTextAry[0])
+                    answerEt.setText(recognizedTextAry[1])
+//                    val myListAdapter = MyListAdapter(this,recognizedText.split("\n").toTypedArray(),)
+//                    listView.adapter = myListAdapter
+//
+//                    listView.setOnItemClickListener(){adapterView, view, position, id ->
+//                        val itemAtPos = adapterView.getItemAtPosition(position)
+//                        val itemIdAtPos = adapterView.getItemIdAtPosition(position)
+//                        Toast.makeText(this, "Click on item at $itemAtPos its item id $itemIdAtPos", Toast.LENGTH_LONG).show()
+//                    }
                 }
                 .addOnFailureListener{e->
                     progressDialog.dismiss()
@@ -168,16 +191,15 @@ class TextReg: AppCompatActivity() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type="image/*"
         galleryActivityResultLauncher.launch(intent)
-
     }
 
     private val  galleryActivityResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
-
             if(result.resultCode == Activity.RESULT_OK){
                 val data = result.data
                 imageUri = data!!.data
                 imageIv.setImageURI(imageUri)
+                recognizeTextFromImage()
             }else{
                 showToast("Canceled")
             }
@@ -199,9 +221,9 @@ class TextReg: AppCompatActivity() {
 
     private val cameraActivityResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
-
             if(result.resultCode == Activity.RESULT_OK){
                 imageIv.setImageURI(imageUri)
+                recognizeTextFromImage()
             }else{
                 showToast("Canceled")
             }
@@ -245,6 +267,8 @@ class TextReg: AppCompatActivity() {
 
                     if(cameraAccepted && storageAccepted){
                         pickImageCamera()
+                        Log.e("eeeeeeee","eeeeee")
+                      //  startCamera()
                     }else{
                         showToast("Camera & Storage permission are required...")
                     }
@@ -256,6 +280,7 @@ class TextReg: AppCompatActivity() {
                     val storageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED
                     if(storageAccepted){
                         pickImageGallery()
+                        recognizeTextFromImage()
                     }else{
                         showToast("Storage permission are required...")
                     }
@@ -268,5 +293,37 @@ class TextReg: AppCompatActivity() {
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun startCamera() {
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+
+        cameraProviderFuture.addListener(Runnable {
+            // Used to bind the lifecycle of cameras to the lifecycle owner
+            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+
+            // Preview
+            val preview = Preview.Builder()
+                .build()
+                .also {
+                    //it.setSurfaceProvider(previewView.createSurfaceProvider())
+                }
+
+            // Select back camera as a default
+            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+
+            try {
+                // Unbind use cases before rebinding
+                cameraProvider.unbindAll()
+
+                // Bind use cases to camera
+                cameraProvider.bindToLifecycle(
+                    this, cameraSelector, preview)
+
+            } catch(exc: Exception) {
+                Log.e(TAG, "Use case binding failed", exc)
+            }
+
+        }, ContextCompat.getMainExecutor(this))
     }
 }
