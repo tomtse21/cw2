@@ -5,8 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".SplashActivity"
     tools:ignore="MissingClass">
+
 
     <ImageView
         android:id="@+id/imgFingure"
@@ -31,17 +32,5 @@
         tools:layout_editor_absoluteY="588dp">
 
     </TextView>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#Ed5100"
-        android:text="Login"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="445dp"
-        tools:ignore="MissingConstraints">
-
-
-    </Button>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,18 +18,18 @@ class SplashActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        proceedToHomeScreen()
+       // proceedToHomeScreen()
     }
 
-    private fun proceedToHomeScreen() {
-        Log.d("123","asd")
-        // Delay the transition to simulate a splash screen
-        Handler().postDelayed({
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }, 1000)
-    }
+//    private fun proceedToHomeScreen() {
+//        Log.d("123","asd")
+//        // Delay the transition to simulate a splash screen
+//        Handler().postDelayed({
+//            val intent = Intent(this, MainActivity::class.java)
+//            startActivity(intent)
+//            finish()
+//        }, 1000)
+//    }
 
 
 

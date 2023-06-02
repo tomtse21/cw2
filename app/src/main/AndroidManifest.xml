@@ -21,18 +21,6 @@
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Cw2">
-        </activity>
-        <activity
-            android:name=".TextReg"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Cw2">
-        </activity>
-        <activity
-            android:name=".SplashActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Cw2">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
