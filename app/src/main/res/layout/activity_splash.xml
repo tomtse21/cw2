@@ -5,32 +5,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SplashActivity"
-    tools:ignore="MissingClass">
+    tools:context=".SplashActivity">
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imgFigure"-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:src="@drawable/baseline_fingerprint_24"-->
+<!--        tools:layout_editor_absoluteX="165dp"-->
+<!--        tools:layout_editor_absoluteY="325dp">-->
+
+<!--    </ImageView>-->
 
 
-    <ImageView
-        android:id="@+id/imgFingure"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/baseline_fingerprint_24"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="165dp"
-        tools:layout_editor_absoluteY="325dp">
-
-    </ImageView>
-
-    <TextView
-        android:id="@+id/tvMsg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="120dp"
-        android:text="SHow msg"
-        app:layout_constraintBaseline_toBottomOf="@id/imgFingure"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="parent"
-        tools:layout_editor_absoluteY="588dp">
-
-    </TextView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
