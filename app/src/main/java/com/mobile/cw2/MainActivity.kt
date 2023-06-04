@@ -12,6 +12,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.mobile.cw2.databinding.ActivityMainBinding
+import androidx.appcompat.widget.Toolbar;
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,15 +24,16 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
 
-//        val navHostFragment = supportFragmentManager.
-//            findFragmentById(R.id.fragment) as NavHostFragment
-//        navController = navHostFragment.navController
-//
-//        setupActionBarWithNavController(navController)
+        val navHostFragment = supportFragmentManager.
+            findFragmentById(R.id.fragment) as NavHostFragment
+        navController = navHostFragment.navController
+
+        setupActionBarWithNavController(navController)
     }
 
-//    override fun onSupportNavigateUp(): Boolean {
-//        return  navController.navigateUp()|| super.onSupportNavigateUp()
-//    }
+    override fun onSupportNavigateUp(): Boolean {
+        return  navController.navigateUp()|| super.onSupportNavigateUp()
+    }
 }
