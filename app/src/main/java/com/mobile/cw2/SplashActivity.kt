@@ -11,11 +11,14 @@ import android.os.PersistableBundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.mobile.cw2.databinding.ActivityMainBinding
+import com.mobile.cw2.uitl.AccessPermission
 
 class SplashActivity: AppCompatActivity() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AccessPermission();
         proceedToHomeScreen()
     }
 
