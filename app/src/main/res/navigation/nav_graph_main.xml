@@ -7,19 +7,20 @@
     <fragment
         android:id="@+id/homePage"
         android:name="com.mobile.cw2.HomePage"
-        android:label="frag_homepage"
+        android:label=""
         tools:layout="@layout/frag_homepage" >
         <action
-            android:id="@+id/action_homePage_to_addPage"
-            app:destination="@id/addPage" />
+            android:id="@+id/action_homePage_to_mainActivity2"
+            app:destination="@id/mainActivity" />
     </fragment>
     <fragment
         android:id="@+id/addPage"
         android:name="com.mobile.cw2.AddPage"
         android:label="frag_addpage"
-        tools:layout="@layout/frag_addpage" >
-        <action
-            android:id="@+id/action_addPage_to_homePage"
-            app:destination="@id/homePage" />
-    </fragment>
+        tools:layout="@layout/frag_addpage" />
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.mobile.cw2.TextReg"
+        android:label="text_reg"
+        tools:layout="@layout/text_reg" />
 </navigation>

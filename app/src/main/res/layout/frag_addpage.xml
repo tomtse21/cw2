@@ -11,6 +11,104 @@
         android:layout_height="match_parent"
         android:padding="16dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/inputImageBtn"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                app:icon="@drawable/baseline_camera_alt_24"
+                app:iconPadding="0dp"
+                android:padding="0dp"
+                app:iconGravity="textStart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/recognizeTextBtn"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                app:icon="@drawable/baseline_document_scanner_24"
+                app:iconPadding="0dp"
+                android:padding="0dp"
+                app:iconGravity="textStart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/voiceBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                app:iconPadding="0dp"
+                android:padding="0dp"
+                app:iconGravity="textStart"
+                android:onClick="speak"
+                app:icon="@drawable/baseline_mic_24" />
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imageIv"
+                    android.adjustViewBounds="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="427dp"
+                    android:src="@drawable/baseline_image_24"
+                    app:strokeWidth="2dp">
+
+                </com.google.android.material.imageview.ShapeableImageView>
+
+                <!--            <TextView android:layout_height="match_parent" android:layout_width="wrap_content"-->
+                <!--                android:text="reg text:"/>-->
+
+
+                <EditText
+                    android:id="@+id/question"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="12dp">
+
+                </EditText>
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/swipeText"
+                    android.adjustViewBounds="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:src="@drawable/baseline_cached_24"
+                    app:strokeWidth="2dp" />
+
+                <EditText
+                    android:id="@+id/answer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="12dp">
+
+                </EditText>
+
+                <!--            <ListView-->
+                <!--                android:id="@+id/listView"-->
+                <!--                android:layout_width="match_parent"-->
+                <!--                android:layout_height="334dp" />-->
+
+            </LinearLayout>
+
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

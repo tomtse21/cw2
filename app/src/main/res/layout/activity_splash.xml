@@ -7,15 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".SplashActivity">
 
-<!--    <ImageView-->
-<!--        android:id="@+id/imgFigure"-->
-<!--        android:layout_width="80dp"-->
-<!--        android:layout_height="80dp"-->
-<!--        android:src="@drawable/baseline_fingerprint_24"-->
-<!--        tools:layout_editor_absoluteX="165dp"-->
-<!--        tools:layout_editor_absoluteY="325dp">-->
+    <ImageView
+        android:id="@+id/imgFigure"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/baseline_fingerprint_24"
+        tools:layout_editor_absoluteX="165dp"
+        tools:layout_editor_absoluteY="325dp">
 
-<!--    </ImageView>-->
+    </ImageView>
 
 
 

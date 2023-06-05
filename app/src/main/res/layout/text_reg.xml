@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="10dp"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".TextReg">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -105,5 +105,12 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <Button
+        android:id="@+id/saveBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="save"
+        android:text="Save" />
 
 </LinearLayout>

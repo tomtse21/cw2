@@ -1,11 +1,16 @@
 package com.mobile.cw2
 
+import MyAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.mobile.cw2.databinding.FragHomepageBinding
 
 /**
@@ -18,6 +23,8 @@ class HomePage : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    lateinit var mAdapter : MyAdapter
+    val values = mutableListOf("Sony", "Samsung", "Huawei", "Apple")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,7 +34,30 @@ class HomePage : Fragment() {
         _binding = FragHomepageBinding.inflate(inflater, container, false)
 
         val view: View = binding.root
+        val mRecyclerView = view.findViewById<RecyclerView>(R.id.list)
+        mRecyclerView.layoutManager = LinearLayoutManager(view.context);
+        mRecyclerView.itemAnimator = DefaultItemAnimator()
 
+        val helper = ItemTouchHelper(object  : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                if(direction == ItemTouchHelper.RIGHT) {
+                    val item = viewHolder.adapterPosition
+                    values.removeAt(item)
+                    mAdapter.notifyDataSetChanged()
+                }
+            }
+        })
+        helper.attachToRecyclerView(mRecyclerView)
+        mAdapter = MyAdapter(values, R.layout.my_row, view.context)
+        mRecyclerView.adapter = mAdapter
 
         return view
 
@@ -40,8 +70,10 @@ class HomePage : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.floatingActionButton.setOnClickListener {
-            findNavController().navigate(R.id.action_homePage_to_addPage)
+            findNavController().navigate(R.id.action_homePage_to_mainActivity2)
         }
+
+
     }
 
     override fun onDestroyView() {

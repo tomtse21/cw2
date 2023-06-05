@@ -22,20 +22,21 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.room.Room
 import com.google.android.material.button.MaterialButton
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.TextRecognizer
 import com.google.mlkit.vision.text.chinese.ChineseTextRecognizerOptions
-import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import com.mobile.cw2.uitl.AppDatabase
+import com.mobile.cw2.uitl.QA
+import com.mobile.cw2.uitl.QADao
 import java.io.File
-import java.lang.Exception
 import java.util.concurrent.ExecutorService
 
 typealias LumaListener = (luma: Double) -> Unit
@@ -66,7 +67,7 @@ class TextReg: AppCompatActivity() {
 
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
-
+    lateinit var qaDao: QADao
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.text_reg)
@@ -103,8 +104,23 @@ class TextReg: AppCompatActivity() {
                 recognizeTextFromImage()
             }
         }
+
+        val db =  Room.databaseBuilder(applicationContext, AppDatabase::class.java, "qaDB")
+            .allowMainThreadQueries().build()
+        qaDao = db.qaDao()
     }
 
+    fun save(view: View){
+        val score = QA(id = 0, question = questionEt.toString(), answer = answerEt.toString())
+        qaDao.insertAll(score)
+
+    }
+    fun listAllName(){
+        val qas : List<QA> = qaDao.loadAllQa()
+        for(qa  in qas){
+            Log.i("DaoExample", "${qa.id!!} - ${qa.question!!} - ${qa.answer}")
+        }
+    }
     fun speak(view: View){
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
@@ -326,4 +342,5 @@ class TextReg: AppCompatActivity() {
 
         }, ContextCompat.getMainExecutor(this))
     }
+
 }
