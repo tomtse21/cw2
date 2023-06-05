@@ -111,9 +111,17 @@ class TextReg: AppCompatActivity() {
     }
 
     fun save(view: View){
-        val score = QA(id = 0, question = questionEt.toString(), answer = answerEt.toString())
+        val score = QA(id = 0, question = questionEt.text.toString(), answer = answerEt.text.toString())
         qaDao.insertAll(score)
 
+    }
+
+    fun swipeText(view: View){
+        val orgQ = questionEt.text;
+        val orgA = answerEt.text;
+
+        questionEt.text = orgA
+        answerEt.text = orgQ
     }
     fun listAllName(){
         val qas : List<QA> = qaDao.loadAllQa()

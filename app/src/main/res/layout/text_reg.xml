@@ -86,6 +86,7 @@
                 android.adjustViewBounds="true"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:onClick="swipeText"
                 android:src="@drawable/baseline_cached_24"
                 app:strokeWidth="2dp" />
 
