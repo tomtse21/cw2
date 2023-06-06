@@ -111,8 +111,13 @@ class TextReg: AppCompatActivity() {
     }
 
     fun save(view: View){
+
         val score = QA(id = 0, question = questionEt.text.toString(), answer = answerEt.text.toString())
+        Log.i("abbb",score.answer.toString())
         qaDao.insertAll(score)
+
+        listAllName()
+
 
     }
 
@@ -124,7 +129,9 @@ class TextReg: AppCompatActivity() {
         answerEt.text = orgQ
     }
     fun listAllName(){
+
         val qas : List<QA> = qaDao.loadAllQa()
+        Log.e("aaaaa",qas.get(0).question.toString())
         for(qa  in qas){
             Log.i("DaoExample", "${qa.id!!} - ${qa.question!!} - ${qa.answer}")
         }
