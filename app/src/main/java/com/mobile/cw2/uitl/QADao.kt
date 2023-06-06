@@ -1,6 +1,7 @@
 package com.mobile.cw2.uitl
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 
@@ -11,4 +12,7 @@ interface QADao {
 
     @Insert
     fun insertAll(vararg qa : QA)
+
+    @Delete
+    fun delete(vararg ag: QA?)
 }

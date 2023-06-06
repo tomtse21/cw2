@@ -1,20 +1,27 @@
 package com.mobile.cw2
 
 import MyAdapter
+import android.content.ClipData
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.compose.ui.platform.ClipboardManager
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.mobile.cw2.databinding.FragHomepageBinding
 import com.mobile.cw2.uitl.AppDatabase
 import com.mobile.cw2.uitl.QA
 import com.mobile.cw2.uitl.QADao
+import java.util.Random
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -30,7 +37,9 @@ class HomePage : Fragment() {
 //    val values = mutableListOf("Sony", "Samsung", "Huawei", "Apple")
     private var qaDao: QADao? = null
     private var qas : List<QA>? = null
-
+    private lateinit var swipeContainer : SwipeRefreshLayout
+    private lateinit var mRecyclerView : RecyclerView
+    private lateinit var view: View
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,8 +48,11 @@ class HomePage : Fragment() {
         _binding = FragHomepageBinding.inflate(inflater, container, false)
 
 
-        val view: View = binding.root
-        val mRecyclerView = view.findViewById<RecyclerView>(R.id.list)
+        view = binding.root
+         swipeContainer = view.findViewById<SwipeRefreshLayout>(R.id.swipeContainer)
+
+
+        mRecyclerView = view.findViewById<RecyclerView>(R.id.list)
         mRecyclerView.layoutManager = LinearLayoutManager(view.context);
         mRecyclerView.itemAnimator = DefaultItemAnimator()
         appDb = AppDatabase.getDatabase(view.context)
@@ -55,10 +67,18 @@ class HomePage : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val item = viewHolder.adapterPosition
+
+
                 if(direction == ItemTouchHelper.RIGHT) {
-                    val item = viewHolder.adapterPosition
-//                    qas.removeAt(item)
-                    mAdapter.notifyDataSetChanged()
+
+                    qaDao?.delete( qas?.get(item))
+                    refreshList()
+                }
+                if(direction == ItemTouchHelper.LEFT ){
+                    //TODO
+                    val textToCopy = qas?.get(item)?.answer.toString()
+                    Toast.makeText(activity, "Text ${textToCopy} copied to clipboard", Toast.LENGTH_LONG).show()
                 }
             }
         })
@@ -67,11 +87,23 @@ class HomePage : Fragment() {
         mAdapter = MyAdapter(qas, R.layout.my_row, view.context)
         mRecyclerView.adapter = mAdapter
 
+        swipeContainer.setOnRefreshListener {
+            refreshList()
+        }
+
         return view
 
-//        val view =  inflater.inflate(R.layout.fragment_second, container, false)
-//        val addBtn = view.findViewById<Button>(R.id.floatingActionButton)
-//        return view
+    }
+
+
+
+    private fun refreshList(){
+        swipeContainer.isRefreshing = false
+        qas = null
+        qas  = qaDao?.loadAllQa()
+        mAdapter = MyAdapter(qas, R.layout.my_row, view.context)
+        mRecyclerView.adapter = mAdapter
+        mAdapter.notifyDataSetChanged()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
