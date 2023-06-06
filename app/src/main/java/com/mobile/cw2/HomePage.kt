@@ -44,7 +44,7 @@ class HomePage : Fragment() {
         mRecyclerView.layoutManager = LinearLayoutManager(view.context);
         mRecyclerView.itemAnimator = DefaultItemAnimator()
         appDb = AppDatabase.getDatabase(view.context)
-
+        qaDao = appDb.qaDao()
         val helper = ItemTouchHelper(object  : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
             override fun onMove(
                 recyclerView: RecyclerView,
@@ -80,9 +80,6 @@ class HomePage : Fragment() {
         binding.floatingActionButton.setOnClickListener {
             findNavController().navigate(R.id.action_homePage_to_mainActivity2)
         }
-
-
-
 
     }
 

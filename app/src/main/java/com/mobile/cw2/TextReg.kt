@@ -20,7 +20,9 @@ import android.widget.ListView
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
@@ -62,6 +64,7 @@ class TextReg: AppCompatActivity() {
 
     private lateinit var textRecognizer: TextRecognizer
 
+    private var mTopToolbar: Toolbar? = null
 
     private var imageCapture: ImageCapture? = null
 
@@ -72,6 +75,11 @@ class TextReg: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.text_reg)
 
+        val actionBar: ActionBar? = supportActionBar
+//        actionBar.setDisplayHomeAsUpEnabled(true)
+
+        mTopToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mTopToolbar);
 
         inputImageBtn = findViewById(R.id.inputImageBtn)
         recognitionBtn = findViewById(R.id.recognizeTextBtn)
@@ -108,6 +116,8 @@ class TextReg: AppCompatActivity() {
         val db =  Room.databaseBuilder(applicationContext, AppDatabase::class.java, "qaDB")
             .allowMainThreadQueries().build()
         qaDao = db.qaDao()
+
+
     }
 
     fun save(view: View){
