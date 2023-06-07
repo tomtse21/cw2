@@ -2,9 +2,9 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Context.CLIPBOARD_SERVICE
-import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
@@ -41,9 +41,18 @@ class MyAdapter(var myList: List<QA>?, var rowLayout: Int, var context: Context)
                 clipboardManager.setPrimaryClip(clipData)
                 Toast.makeText(context, textToCopy, Toast.LENGTH_LONG).show()
         }
+
+        //Long Press
+        //Long Press
+        holder.itemView.setOnLongClickListener(OnLongClickListener { v ->
+            val textToCopy = holder.question.text
+            Toast.makeText(v.context, "Position is $textToCopy", Toast.LENGTH_SHORT)
+                .show()
+            false
+        })
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) , View.OnLongClickListener{
         lateinit var question : TextView
         lateinit var answer : TextView
 
@@ -54,6 +63,10 @@ class MyAdapter(var myList: List<QA>?, var rowLayout: Int, var context: Context)
             answer = itemView.findViewById(R.id.answer)
             copyBtn = itemView.findViewById(R.id.copyBtn)
 
+        }
+
+        override fun onLongClick(v: View?): Boolean {
+            TODO("Not yet implemented")
         }
 
 

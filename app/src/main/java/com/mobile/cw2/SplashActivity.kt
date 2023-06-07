@@ -3,7 +3,6 @@ package com.mobile.cw2
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.os.PersistableBundle
 import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
@@ -13,7 +12,6 @@ import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
-import com.mobile.cw2.AccessPermission
 import com.mobile.cw2.databinding.ActivitySplashBinding
 import java.util.concurrent.Executor
 
@@ -36,6 +34,7 @@ class SplashActivity: AppCompatActivity() {
         binding.button.isEnabled = true
         binding.imgFigure.setOnClickListener {
             checkDeviceHasBiometric()
+            proceedToHomeScreen()
         }
 
         executor = ContextCompat.getMainExecutor(this)

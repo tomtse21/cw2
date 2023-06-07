@@ -130,7 +130,6 @@ class TextReg: AppCompatActivity() {
     }
 
     fun save(view: View){
-
         val score = QA(id = 0, question = questionEt.text.toString(), answer = answerEt.text.toString())
         Log.i("abbb",score.answer.toString())
         qaDao.insertAll(score)
