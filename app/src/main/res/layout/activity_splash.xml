@@ -5,18 +5,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".SplashActivity">
 
     <ImageView
         android:id="@+id/imgFigure"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/baseline_fingerprint_24"
-        tools:layout_editor_absoluteX="165dp"
-        tools:layout_editor_absoluteY="325dp">
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/app"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
     </ImageView>
 
+    <TextView
+        android:id="@+id/tvShowMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="25dp"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgFigure" />
+
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        app:backgroundTint="#1A237E"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvShowMsg" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
