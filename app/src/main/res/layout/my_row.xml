@@ -30,7 +30,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="left"
-                android:text="Question"
+                android:text=""
+                android:hint="Question"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
 

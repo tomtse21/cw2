@@ -9,12 +9,20 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
+        app:title="Security questions"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
+        app:titleTextColor="@color/white"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        tools:ignore="MissingConstraints" />
+        android:gravity="left"
+        tools:ignore="MissingConstraints" >
+
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Security questions" android:textSize="25dp"  android:gravity="center" android:textColor="@color/white">
+
+        </TextView>
+    </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,6 +46,7 @@
                 android:padding="0dp"
                 app:cornerRadius="5dp"
                 app:iconGravity="textStart"
+                android:text=" Camera"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -48,23 +57,13 @@
                 app:icon="@drawable/baseline_document_scanner_24"
                 app:iconPadding="0dp"
                 android:padding="0dp"
+                android:text=" Scan"
                 app:cornerRadius="5dp"
                 app:iconGravity="textStart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/voiceBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:layout_weight="1"
-                app:iconPadding="0dp"
-                android:padding="0dp"
-                app:cornerRadius="5dp"
-                app:iconGravity="textStart"
-                android:onClick="speak"
-                app:icon="@drawable/baseline_mic_24" />
+
 
         </LinearLayout>
 
@@ -75,6 +74,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:orientation="vertical">
 
                 <com.google.android.material.imageview.ShapeableImageView
@@ -91,32 +91,94 @@
                 <!--                android:text="reg text:"/>-->
 
 
-
-                <EditText
-                    android:id="@+id/question"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/linearLayout3"
+                    android:layout_marginTop="15dp"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:textSize="12dp">
+                    android:layout_height="wrap_content">
 
-                </EditText>
+                    <EditText
+                        android:id="@+id/question"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:textSize="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/voiceBtn1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/voiceBtn1"></EditText>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/voiceBtn1"
+                        android:layout_width="60dp"
+                        android:layout_height="50dp"
+                        android:onClick="speak1"
+                        android:padding="0dp"
+                        app:cornerRadius="5dp"
+                        app:icon="@drawable/baseline_mic_24"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/question" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/swipeText"
+                    android:strokeWidth="0"
                     android.adjustViewBounds="true"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:layout_marginTop="15dp"
                     android:onClick="swipeText"
                     android:padding="5dp"
                     android:src="@drawable/baseline_cached_24"
-                    app:strokeWidth="2dp" />
+                    app:strokeWidth="5dp" />
 
-                <EditText
-                    android:id="@+id/answer"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/linearLayout4"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:textSize="12dp">
+                    android:layout_height="match_parent">
 
-                </EditText>
+                    <EditText
+                        android:id="@+id/answer"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:textSize="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/voiceBtn2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/voiceBtn2"></EditText>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/voiceBtn2"
+                        android:layout_width="60dp"
+                        android:layout_height="50dp"
+                        android:onClick="speak2"
+                        android:padding="0dp"
+                        app:cornerRadius="5dp"
+                        app:icon="@drawable/baseline_mic_24"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/answer" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
 
                 <!--            <ListView-->
                 <!--                android:id="@+id/listView"-->

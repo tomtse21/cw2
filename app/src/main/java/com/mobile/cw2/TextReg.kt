@@ -45,7 +45,8 @@ typealias LumaListener = (luma: Double) -> Unit
 class TextReg: AppCompatActivity() {
     private lateinit var inputImageBtn: MaterialButton
     private lateinit var recognitionBtn: MaterialButton
-    private lateinit var voiceBtn: MaterialButton
+    private lateinit var voiceBtn1: MaterialButton
+    private lateinit var voiceBtn2: MaterialButton
     private lateinit var imageIv: ImageView
     private lateinit var recognizedTextEt: EditText
     private lateinit var listView: ListView
@@ -80,10 +81,13 @@ class TextReg: AppCompatActivity() {
 
         mTopToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mTopToolbar);
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_24)
 
         inputImageBtn = findViewById(R.id.inputImageBtn)
         recognitionBtn = findViewById(R.id.recognizeTextBtn)
-        voiceBtn = findViewById(R.id.voiceBtn)
+        voiceBtn1 = findViewById(R.id.voiceBtn1)
+        voiceBtn2 = findViewById(R.id.voiceBtn2)
 
         imageIv = findViewById(R.id.imageIv)
         questionEt = findViewById(R.id.question)
@@ -120,13 +124,18 @@ class TextReg: AppCompatActivity() {
 
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return super.onSupportNavigateUp()
+    }
+
     fun save(view: View){
+
         val score = QA(id = 0, question = questionEt.text.toString(), answer = answerEt.text.toString())
         Log.i("abbb",score.answer.toString())
         qaDao.insertAll(score)
 
-        listAllName()
-
+        Toast.makeText(applicationContext, "Question saved.", Toast.LENGTH_LONG).show()
 
     }
 
@@ -145,19 +154,32 @@ class TextReg: AppCompatActivity() {
             Log.i("DaoExample", "${qa.id!!} - ${qa.question!!} - ${qa.answer}")
         }
     }
-    fun speak(view: View){
+    fun speak1(view: View){
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Start Speaking")
-        startActivityForResult(intent,100)
+        startActivityForResult(intent,101)
+    }
+
+    fun speak2(view: View){
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Start Speaking")
+        startActivityForResult(intent,102)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-//        recognizedTextEt.setText(
-//            data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.get(0).toString())
-    }
 
+        if(requestCode == 101){
+            questionEt.setText(
+                data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.get(0).toString())
+        }else if(requestCode == 102){
+            answerEt.setText(
+                data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.get(0).toString())
+        }
+
+    }
 
     private fun recognizeTextFromImage() {
         progressDialog.setMessage("Preparing image")
