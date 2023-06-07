@@ -212,7 +212,6 @@ class TextReg: AppCompatActivity() {
                 if(checkCameraPermission()){
                     pickImageCamera()
                 }else{
-//                    pickImageGallery()
                    requestCameraPermission()
                 }
             }else if(id == 2){
@@ -248,6 +247,11 @@ class TextReg: AppCompatActivity() {
         }
 
     private fun pickImageCamera(){
+
+//        val intent = Intent(this, CameraActivity::class.java)
+//        startActivity(intent)
+//        finish()
+
         val values = ContentValues()
         values.put(MediaStore.Images.Media.TITLE, "Sample  Title");
         values.put(MediaStore.Images.Media.DESCRIPTION,"Sample Title");
@@ -334,37 +338,4 @@ class TextReg: AppCompatActivity() {
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
-
-    private fun startCamera() {
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
-
-        cameraProviderFuture.addListener(Runnable {
-            // Used to bind the lifecycle of cameras to the lifecycle owner
-            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-
-            // Preview
-            val preview = Preview.Builder()
-                .build()
-                .also {
-                    //it.setSurfaceProvider(previewView.createSurfaceProvider())
-                }
-
-            // Select back camera as a default
-            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-
-            try {
-                // Unbind use cases before rebinding
-                cameraProvider.unbindAll()
-
-                // Bind use cases to camera
-                cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview)
-
-            } catch(exc: Exception) {
-                Log.e(TAG, "Use case binding failed", exc)
-            }
-
-        }, ContextCompat.getMainExecutor(this))
-    }
-
 }

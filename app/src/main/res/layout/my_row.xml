@@ -53,11 +53,11 @@
         </LinearLayout>
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/dismissAnswerBtn"
+            android:id="@+id/copyBtn"
             android:layout_width="wrap_content"
             android:layout_height="34dp"
             android:layout_weight="1"
-            android:src="@drawable/baseline_remove_red_eye_24"
+            android:src="@drawable/baseline_content_copy_24"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="@+id/linearLayout2"
             card_view:layout_constraintStart_toEndOf="@+id/linearLayout2"
