@@ -11,11 +11,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_margin="15dp"
+        android:weightSum="3"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/linearLayout2"
-            android:layout_width="301dp"
+            android:layout_width="251dp"
+            android:layout_weight="2"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -52,12 +54,12 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/dismissAnswerBtn"
-            android:layout_width="36dp"
+            android:layout_width="wrap_content"
             android:layout_height="34dp"
-            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
             android:src="@drawable/baseline_remove_red_eye_24"
             card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintEnd_toEndOf="@+id/linearLayout2"
             card_view:layout_constraintStart_toEndOf="@+id/linearLayout2"
             card_view:layout_constraintTop_toTopOf="parent" />
 

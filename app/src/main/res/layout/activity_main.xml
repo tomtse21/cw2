@@ -10,20 +10,28 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
+        app:title="Security questions"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        tools:ignore="MissingConstraints" />
+        android:gravity="center"
+        tools:ignore="MissingConstraints" >
+
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Security questions" android:textSize="30dp"  android:gravity="center" android:textColor="@color/white">
+
+        </TextView>
+
+    </androidx.appcompat.widget.Toolbar>
 
     <fragment
         android:id="@+id/fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="15dp"
         android:layout_marginTop="70dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         app:defaultNavHost="true"
         app:layout_constraintHorizontal_bias="0.0"
