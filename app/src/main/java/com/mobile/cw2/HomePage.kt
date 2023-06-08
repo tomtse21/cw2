@@ -1,15 +1,16 @@
 package com.mobile.cw2
 
 import MyAdapter
-import android.content.ClipData
-import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.RectF
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.compose.ui.platform.ClipboardManager
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -21,13 +22,16 @@ import com.mobile.cw2.databinding.FragHomepageBinding
 import com.mobile.cw2.uitl.AppDatabase
 import com.mobile.cw2.uitl.QA
 import com.mobile.cw2.uitl.QADao
-import java.util.Random
+
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class HomePage : Fragment() {
 
+    internal enum class ButtonsState {
+        GONE, LEFT_VISIBLE, RIGHT_VISIBLE
+    }
     private var _binding: FragHomepageBinding? = null
     private lateinit var appDb : AppDatabase
     // This property is only valid between onCreateView and
@@ -40,9 +44,14 @@ class HomePage : Fragment() {
     private lateinit var swipeContainer : SwipeRefreshLayout
     private lateinit var mRecyclerView : RecyclerView
     private lateinit var view: View
+    private val deleteBg = ColorDrawable(Color.RED)
+    private val updateBg = ColorDrawable(Color.GRAY)
+    private val buttonWidth = 300f
+    private val buttonShowedState: ButtonsState = ButtonsState.GONE
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
 
         _binding = FragHomepageBinding.inflate(inflater, container, false)
@@ -57,11 +66,13 @@ class HomePage : Fragment() {
         mRecyclerView.itemAnimator = DefaultItemAnimator()
         appDb = AppDatabase.getDatabase(view.context)
         qaDao = appDb.qaDao()
-        val helper = ItemTouchHelper(object  : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
+
+
+        val helper = ItemTouchHelper(object  : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT){
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
+                target: RecyclerView.ViewHolder,
             ): Boolean {
                 return false
             }
@@ -75,11 +86,47 @@ class HomePage : Fragment() {
                     qaDao?.delete( qas?.get(item))
                     refreshList()
                 }
+
                 if(direction == ItemTouchHelper.LEFT ){
                     //TODO
                     val textToCopy = qas?.get(item)?.answer.toString()
                     Toast.makeText(activity, "Text ${textToCopy} copied to clipboard", Toast.LENGTH_LONG).show()
                 }
+            }
+
+            override fun onChildDraw(
+                c: Canvas, recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float,
+                actionState: Int, isCurrentlyActive: Boolean,
+            ) {
+                super.onChildDraw(
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
+//                val itemView = viewHolder.itemView
+//                val backgroundCornerOffset = 5
+//                if (dX > 0) { // Swiping to the right
+//                    deleteBg.setBounds(
+//                        itemView.left, itemView.top,
+//                        itemView.left + dX.toInt() + backgroundCornerOffset,
+//                        itemView.bottom
+//                    )
+//                } else if (dX < 0) { // Swiping to the left
+//                    updateBg.setBounds(
+//                        itemView.right + dX.toInt() - backgroundCornerOffset,
+//                        itemView.top, itemView.right, itemView.bottom
+//                    )
+//                } else { // view is unSwiped
+//                    deleteBg.setBounds(0, 0, 0, 0)
+//                }
+//                deleteBg.draw(c)
+//                updateBg.draw(c)
+                drawButtons(c, viewHolder);
             }
         })
         helper.attachToRecyclerView(mRecyclerView)
@@ -95,7 +142,45 @@ class HomePage : Fragment() {
 
     }
 
+    private fun drawButtons(c: Canvas, viewHolder: RecyclerView.ViewHolder) {
+        val buttonWidthWithoutPadding: Float = buttonWidth - 20
+        val corners = 16f
+        val itemView = viewHolder.itemView
+        val p = Paint()
+        val leftButton = RectF(
+            itemView.left.toFloat(),
+            itemView.top.toFloat(),
+            itemView.left + buttonWidthWithoutPadding,
+            itemView.bottom.toFloat()
+        )
+        p.setColor(Color.BLUE)
+        c.drawRoundRect(leftButton, corners, corners, p)
+        drawText("EDIT", c, leftButton, p)
+        val rightButton = RectF(
+            itemView.right - buttonWidthWithoutPadding,
+            itemView.top.toFloat(),
+            itemView.right.toFloat(),
+            itemView.bottom.toFloat()
+        )
+        p.setColor(Color.RED)
+        c.drawRoundRect(rightButton, corners, corners, p)
+        drawText("DELETE", c, rightButton, p)
 
+        if (buttonShowedState === ButtonsState.LEFT_VISIBLE) {
+
+        } else if (buttonShowedState === ButtonsState.RIGHT_VISIBLE) {
+
+        }
+    }
+
+    private fun drawText(text: String, c: Canvas, button: RectF, p: Paint) {
+        val textSize = 30f
+        p.setColor(Color.WHITE)
+        p.setAntiAlias(true)
+        p.setTextSize(textSize)
+        val textWidth: Float = p.measureText(text)
+        c.drawText(text, button.centerX() - textWidth / 2, button.centerY() + textSize / 2, p)
+    }
 
     private fun refreshList(){
         swipeContainer.isRefreshing = false
