@@ -102,7 +102,7 @@ class AddPage : Fragment() {
         //textRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
         textRecognizer = TextRecognition.getClient(ChineseTextRecognizerOptions.Builder().build())
         inputImageBtn.setOnClickListener{
-            showInputImageDialog()
+//            showInputImageDialog()
         }
 
         saveBtn.setOnClickListener{
@@ -169,7 +169,7 @@ class AddPage : Fragment() {
 
     private fun showInputImageDialog() {
         val popMenu = PopupMenu(activity,inputImageBtn)
-        popMenu.menu.add(Menu.NONE, 1, 1, "CAMERA")
+        popMenu.menu.add(Menu.NONE, 1, 1, "CAMERA1")
         popMenu.menu.add(Menu.NONE, 2, 2, "GALLERY")
 
         popMenu.show()

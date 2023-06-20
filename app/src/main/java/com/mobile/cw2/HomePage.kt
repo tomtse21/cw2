@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -48,6 +47,9 @@ class HomePage : Fragment() {
     private val updateBg = ColorDrawable(Color.GRAY)
     private val buttonWidth = 300f
     private val buttonShowedState: ButtonsState = ButtonsState.GONE
+    private var buttonInstance: RectF? = null
+    private var swipeBack = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,13 +70,21 @@ class HomePage : Fragment() {
         qaDao = appDb.qaDao()
 
 
-        val helper = ItemTouchHelper(object  : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT){
+        val helper = ItemTouchHelper(object  : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder,
             ): Boolean {
                 return false
+            }
+
+            override fun convertToAbsoluteDirection(flags: Int, layoutDirection: Int): Int {
+                if (swipeBack) {
+                    swipeBack = buttonShowedState !== ButtonsState.GONE
+                    return 0
+                }
+                return super.convertToAbsoluteDirection(flags, layoutDirection)
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -85,12 +95,6 @@ class HomePage : Fragment() {
 
                     qaDao?.delete( qas?.get(item))
                     refreshList()
-                }
-
-                if(direction == ItemTouchHelper.LEFT ){
-                    //TODO
-                    val textToCopy = qas?.get(item)?.answer.toString()
-                    Toast.makeText(activity, "Text ${textToCopy} copied to clipboard", Toast.LENGTH_LONG).show()
                 }
             }
 
@@ -148,29 +152,14 @@ class HomePage : Fragment() {
         val itemView = viewHolder.itemView
         val p = Paint()
         val leftButton = RectF(
-            itemView.left.toFloat(),
-            itemView.top.toFloat(),
-            itemView.left + buttonWidthWithoutPadding,
-            itemView.bottom.toFloat()
-        )
-        p.setColor(Color.BLUE)
-        c.drawRoundRect(leftButton, corners, corners, p)
-        drawText("EDIT", c, leftButton, p)
-        val rightButton = RectF(
-            itemView.right - buttonWidthWithoutPadding,
+            itemView.left - buttonWidthWithoutPadding,
             itemView.top.toFloat(),
             itemView.right.toFloat(),
             itemView.bottom.toFloat()
         )
-        p.setColor(Color.RED)
-        c.drawRoundRect(rightButton, corners, corners, p)
-        drawText("DELETE", c, rightButton, p)
-
-        if (buttonShowedState === ButtonsState.LEFT_VISIBLE) {
-
-        } else if (buttonShowedState === ButtonsState.RIGHT_VISIBLE) {
-
-        }
+        p.setColor(Color.GRAY)
+        c.drawRoundRect(leftButton, corners, corners, p)
+        drawText("DEL", c, leftButton, p)
     }
 
     private fun drawText(text: String, c: Canvas, button: RectF, p: Paint) {
