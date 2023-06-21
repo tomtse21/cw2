@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -12,8 +13,10 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.speech.RecognizerIntent
 import android.util.Log
+import android.view.KeyEvent
 import android.view.Menu
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ListView
@@ -120,6 +123,27 @@ class TextReg: AppCompatActivity() {
         val db =  Room.databaseBuilder(applicationContext, AppDatabase::class.java, "qaDB")
             .allowMainThreadQueries().build()
         qaDao = db.qaDao()
+
+        questionEt.setOnKeyListener { _, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                // Your code logic when the Enter key is pressed
+                // For example, display a toast message
+                answerEt.requestFocus()
+                return@setOnKeyListener true
+            }
+            return@setOnKeyListener false
+        }
+
+        answerEt.setOnKeyListener { _, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                // Your code logic when the Enter key is pressed
+                // For example, display a toast message
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(answerEt.windowToken, 0)
+                return@setOnKeyListener true
+            }
+            return@setOnKeyListener false
+        }
 
 
     }
