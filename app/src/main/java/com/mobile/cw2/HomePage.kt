@@ -58,7 +58,6 @@ class HomePage : Fragment() {
 
         _binding = FragHomepageBinding.inflate(inflater, container, false)
 
-
         view = binding.root
          swipeContainer = view.findViewById<SwipeRefreshLayout>(R.id.swipeContainer)
 
@@ -112,24 +111,7 @@ class HomePage : Fragment() {
                     actionState,
                     isCurrentlyActive
                 )
-//                val itemView = viewHolder.itemView
-//                val backgroundCornerOffset = 5
-//                if (dX > 0) { // Swiping to the right
-//                    deleteBg.setBounds(
-//                        itemView.left, itemView.top,
-//                        itemView.left + dX.toInt() + backgroundCornerOffset,
-//                        itemView.bottom
-//                    )
-//                } else if (dX < 0) { // Swiping to the left
-//                    updateBg.setBounds(
-//                        itemView.right + dX.toInt() - backgroundCornerOffset,
-//                        itemView.top, itemView.right, itemView.bottom
-//                    )
-//                } else { // view is unSwiped
-//                    deleteBg.setBounds(0, 0, 0, 0)
-//                }
-//                deleteBg.draw(c)
-//                updateBg.draw(c)
+
                 drawButtons(c, viewHolder);
             }
         })

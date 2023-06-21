@@ -80,7 +80,6 @@ class TextReg: AppCompatActivity() {
         setContentView(R.layout.text_reg)
 
         val actionBar: ActionBar? = supportActionBar
-//        actionBar.setDisplayHomeAsUpEnabled(true)
 
         mTopToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mTopToolbar);
@@ -96,8 +95,6 @@ class TextReg: AppCompatActivity() {
         questionEt = findViewById(R.id.question)
         answerEt = findViewById(R.id.answer)
 
-       // recognizedTextEt = findViewById(R.id.recognizedTextEt)
-//        listView = findViewById(R.id.listView)
 
         cameraPermissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         storageaPermissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -106,7 +103,6 @@ class TextReg: AppCompatActivity() {
         progressDialog.setTitle("Please wait")
         progressDialog.setCanceledOnTouchOutside(false)
 
-        //textRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
         textRecognizer = TextRecognition.getClient(ChineseTextRecognizerOptions.Builder().build())
         inputImageBtn.setOnClickListener{
             showInputImageDialog()
@@ -126,8 +122,6 @@ class TextReg: AppCompatActivity() {
 
         questionEt.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                // Your code logic when the Enter key is pressed
-                // For example, display a toast message
                 answerEt.requestFocus()
                 return@setOnKeyListener true
             }
@@ -136,8 +130,7 @@ class TextReg: AppCompatActivity() {
 
         answerEt.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                // Your code logic when the Enter key is pressed
-                // For example, display a toast message
+
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(answerEt.windowToken, 0)
                 return@setOnKeyListener true
@@ -155,7 +148,7 @@ class TextReg: AppCompatActivity() {
 
     fun save(view: View){
         val score = QA(id = 0, question = questionEt.text.toString(), answer = answerEt.text.toString())
-        Log.i("abbb",score.answer.toString())
+
         qaDao.insertAll(score)
 
         Toast.makeText(applicationContext, "Question saved.", Toast.LENGTH_LONG).show()
@@ -169,14 +162,7 @@ class TextReg: AppCompatActivity() {
         questionEt.text = orgA
         answerEt.text = orgQ
     }
-    fun listAllName(){
 
-        val qas : List<QA> = qaDao.loadAllQa()
-        Log.e("aaaaa",qas.get(0).question.toString())
-        for(qa  in qas){
-            Log.i("DaoExample", "${qa.id!!} - ${qa.question!!} - ${qa.answer}")
-        }
-    }
     fun speak1(view: View){
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
@@ -217,20 +203,12 @@ class TextReg: AppCompatActivity() {
                     progressDialog.dismiss()
                     val recognizedText = text.text
 
-//                    recognizedTextEt.setText(recognizedText)
                     val recognizedTextAry = recognizedText.split("\n").toTypedArray();
 //
 
                     questionEt.setText(recognizedTextAry[0])
                     answerEt.setText(recognizedTextAry[1])
-//                    val myListAdapter = MyListAdapter(this,recognizedText.split("\n").toTypedArray(),)
-//                    listView.adapter = myListAdapter
-//
-//                    listView.setOnItemClickListener(){adapterView, view, position, id ->
-//                        val itemAtPos = adapterView.getItemAtPosition(position)
-//                        val itemIdAtPos = adapterView.getItemIdAtPosition(position)
-//                        Toast.makeText(this, "Click on item at $itemAtPos its item id $itemIdAtPos", Toast.LENGTH_LONG).show()
-//                    }
+
                 }
                 .addOnFailureListener{e->
                     progressDialog.dismiss()
@@ -292,10 +270,6 @@ class TextReg: AppCompatActivity() {
         }
 
     private fun pickImageCamera(){
-
-//        val intent = Intent(this, CameraActivity::class.java)
-//        startActivity(intent)
-//        finish()
 
         val values = ContentValues()
         values.put(MediaStore.Images.Media.TITLE, "Sample  Title");
