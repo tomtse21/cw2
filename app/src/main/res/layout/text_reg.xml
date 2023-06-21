@@ -138,6 +138,7 @@
                     android.adjustViewBounds="true"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    app:backgroundTint="@android:color/holo_orange_light"
                     android:layout_marginTop="15dp"
                     android:onClick="swipeText"
                     android:padding="5dp"
@@ -199,7 +200,7 @@
             android:layout_height="wrap_content"
             app:cornerRadius="5dp"
             android:onClick="save"
-            app:backgroundTint="@android:color/background_dark"
+            app:backgroundTint="@android:color/holo_orange_light"
             android:text="Save" />
 
     </LinearLayout>
