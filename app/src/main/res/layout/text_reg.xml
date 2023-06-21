@@ -11,15 +11,15 @@
         android:id="@+id/toolbar"
         app:title="Security questions"
         android:layout_width="match_parent"
+        app:buttonGravity="center_vertical"
         android:layout_height="wrap_content"
         app:titleTextColor="@color/white"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        android:gravity="left"
         tools:ignore="MissingConstraints" >
 
-        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Security questions" android:textSize="25dp"  android:gravity="center" android:textColor="@color/white">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Add Security Questions" android:textSize="25dp"  android:textColor="@color/white">
 
         </TextView>
     </androidx.appcompat.widget.Toolbar>

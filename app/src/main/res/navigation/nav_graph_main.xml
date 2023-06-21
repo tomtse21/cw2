@@ -13,11 +13,6 @@
             android:id="@+id/action_homePage_to_mainActivity2"
             app:destination="@id/mainActivity" />
     </fragment>
-    <fragment
-        android:id="@+id/addPage"
-        android:name="com.mobile.cw2.AddPage"
-        android:label="frag_addpage"
-        tools:layout="@layout/frag_addpage" />
     <activity
         android:id="@+id/mainActivity"
         android:name="com.mobile.cw2.TextReg"
