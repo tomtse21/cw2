@@ -15,7 +15,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
     }
@@ -42,6 +42,10 @@ android {
 dependencies {
 
     implementation 'androidx.room:room-ktx:2.4.2'
+    implementation 'androidx.test:monitor:1.5.0'
+    implementation 'androidx.test.ext:junit-ktx:1.1.5'
+//    implementation 'androidx.test.ext:junit-ktx:1.1.5'
+    testImplementation 'androidx.test.ext:junit:1.1.1'
     def room_version = "2.5.1"
 
     implementation "androidx.room:room-runtime:$room_version"
@@ -143,17 +147,13 @@ dependencies {
     // To use the androidx.test.espresso
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    // To use the JUnit Extension APIs
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    // Kotlin extensions for androidx.test.ext.junit
-    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.5")
 
-    // To use the Truth Extension APIs
-    androidTestImplementation("androidx.test.ext:truth:1.5.0")
-
-    // To use the androidx.test.runner APIs
-    androidTestImplementation("androidx.test:runner:1.5.2")
-
-    // To use android test orchestrator
-    androidTestUtil("androidx.test:orchestrator:1.4.2")
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    testImplementation "org.robolectric:robolectric:4.10.3"
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation 'org.hamcrest:hamcrest-library:2.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support:support-annotations:28.0.0'
+    debugImplementation 'com.android.support.test:runner:1.0.2'
 }

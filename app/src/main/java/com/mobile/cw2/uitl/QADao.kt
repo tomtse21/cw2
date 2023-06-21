@@ -4,6 +4,8 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface QADao {
@@ -15,4 +17,9 @@ interface QADao {
 
     @Delete
     fun delete(vararg ag: QA?)
+
+    @Update
+    suspend fun updateQa(vararg qa: QA?)
+
+
 }
