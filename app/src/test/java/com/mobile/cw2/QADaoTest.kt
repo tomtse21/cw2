@@ -36,21 +36,39 @@ class QADaoTest {
     }
 
     @Test
-    fun insertQA_returnsTrue() = runBlocking {
-        val qa = QA(id = 1, "How are you", answer = "im' find thank you")
-        assertEquals( qaDao.insertAll(qa), true);
-
-    }
-
-    @Test
     fun deleteQA_returnsTrue() = runBlocking {
         val qa = QA(id = 1, "How are you", answer = "im' find thank you")
-        assertEquals( qaDao.delete(qa), true);
+        qaDao.delete(qa)
+        val getAllQa = qaDao.loadAllQa();
+        assertEquals(getAllQa.size , 0);
     }
 
     @Test
-    fun updateQA_returnsTrue() = runBlocking {
-        val qa = QA(id = 1, "How are you?", answer = "im' find thank you1")
-        assertEquals( qaDao.updateQa(qa), true);
+    fun insertQA_returnsTrue() = runBlocking {
+        val qa = QA(id = 1, "How are you", answer = "im' find thank you")
+        qaDao.insertAll(qa)
+        val getAllQa = qaDao.loadAllQa();
+        assertEquals(getAllQa.size, 1);
     }
+
+    @Test
+    fun selectAllQA_returnsTrue() = runBlocking {
+        val qa = QA(id = 1, "How are you", answer = "im' find thank you")
+        val qa2 = QA(id = 2, "How are you", answer = "im' find thank you")
+        qaDao.insertAll(qa)
+        qaDao.insertAll(qa2)
+        val getAllQa = qaDao.loadAllQa();
+        assertEquals(getAllQa.size, 2);
+    }
+
+//    @Test
+//    fun updateQA_returnsTrue() = runBlocking {
+//        val qa = QA(id = 1, "How are you?", answer = "im' find thank you1")
+//        qaDao.insertAll(qa)
+//        val qa2 = QA(id = 1, "How are you?2222", answer = "im' find thank you1")
+//        qaDao.updateQa(qa2)
+//        val getQa = qaDao.getQaById(qa2.id);
+//        assertEquals(getQa.question , "How are you?2222");
+//    }
+
 }

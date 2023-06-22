@@ -28,6 +28,8 @@ class SplashActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
        // requestPermission()
 
+
+
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -86,23 +88,12 @@ class SplashActivity: AppCompatActivity() {
     }
 
     private fun proceedToHomeScreen() {
-        Log.d("123","asd")
         // Delay the transition to simulate a splash screen
         Handler().postDelayed({
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         }, 500)
-    }
-
-    private fun requestPermission() {
-        Log.d("2234","asd")
-        // Delay the transition to simulate a splash screen
-        Handler().postDelayed({
-            val intent = Intent(this, AccessPermission::class.java)
-            startActivity(intent)
-            finish()
-        }, 1000)
     }
 
     private fun checkDeviceHasBiometric() {

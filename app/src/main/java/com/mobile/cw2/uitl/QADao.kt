@@ -19,7 +19,10 @@ interface QADao {
     fun delete(vararg ag: QA?)
 
     @Update
-    suspend fun updateQa(vararg qa: QA?)
+    fun updateQa(vararg qa: QA?)
+
+//    @Query("Select * from qaTable where id= :id")
+//    fun getQaById(id: Int) : QA
 
 
 }
